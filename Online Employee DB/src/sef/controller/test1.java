@@ -1,5 +1,5 @@
 package sef.controller;
 
-public class testone {
+public class test1 {
 
 }

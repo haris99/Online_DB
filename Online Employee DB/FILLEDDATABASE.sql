@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `employeedatabase` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `employeedatabase`;
 -- MySQL dump 10.13  Distrib 5.6.23, for Win64 (x86_64)
 --
 -- Host: localhost    Database: employeedatabase
@@ -190,4 +192,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-07-22 11:35:26
+-- Dump completed on 2015-07-22 12:13:11

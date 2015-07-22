@@ -21,12 +21,16 @@ public class SearchEmployeeTest extends TestCase{
 		List result = service.findEmployeesByName("Arnolds", "Skuja");
 		assertNotNull(result);
 		assertTrue(result.size() > 0);
+		result = service.findEmployeesByName("random", "arnold");
+		assertTrue(result.size() == 0);
 	}
 	
 	public void testFindEmployeesByProject(){
 		List result = service.findEmployeesByProject(1);
 		assertNotNull(result);
 		assertTrue(result.size() > 0);
+		result = service.findEmployeesByProject(999);
+		assertTrue(result.size() == 0);
 	}
 	
 	public void testListAllProjects(){

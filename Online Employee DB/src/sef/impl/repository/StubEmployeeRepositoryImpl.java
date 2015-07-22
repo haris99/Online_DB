@@ -40,7 +40,7 @@ public class StubEmployeeRepositoryImpl implements EmployeeRepository {
 		List<Employee> resultList = new ArrayList<Employee>();
 		try {
 			conn = dataSource.getConnection();
-			PreparedStatement ps = conn.prepareStatement("SELECT * FROM EMPLOYEE WHERE first_name = ? AND last_name = ?");
+			PreparedStatement ps = conn.prepareStatement("SELECT * FROM EMPLOYEE WHERE first_name LIKE ? AND last_name LIKE ?");
 			ps.setString(1, firstName+"%");
 			ps.setString(2, lastName+"%");
 			ResultSet rs = ps.executeQuery();

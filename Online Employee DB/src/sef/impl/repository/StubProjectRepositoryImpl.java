@@ -1,5 +1,10 @@
 package sef.impl.repository;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,35 +30,194 @@ public class StubProjectRepositoryImpl implements ProjectRepository {
 
 	private static Logger log = Logger.getLogger(StubProjectRepositoryImpl.class);
 
+	private DataSource dataSource;
+	
 	public StubProjectRepositoryImpl(DataSource dataSource) {
+		this.dataSource = dataSource;
 	}
 
 	@Override
 	public List<Project> listAllProjects() {
-
-		List<Project> list = new ArrayList<Project>();
-		return list;
+		Connection conn = null;
+		List<Project> resultList = new ArrayList<Project>();
+		Statement stmt;
+		ResultSet rs;
+		try {
+			conn = dataSource.getConnection();
+			stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			rs = stmt.executeQuery("SELECT * FROM PROJECT");			
+			
+			while (rs.next()) {
+				Project proj = new Project();
+				proj.setID(rs.getLong("id"));
+				proj.setName(rs.getString("name"));
+				proj.setDescription(rs.getString("description"));
+				proj.setClient(rs.getString("client"));
+				resultList.add(proj);
+			}
+			rs.close();
+			stmt.close();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+		return resultList;
 	}
 
 	@Override
 	public List<EmployeeProjectDetail> getEmployeeProjectHistory(long employeeID) {
 		
-		List<EmployeeProjectDetail> detailList = new ArrayList<EmployeeProjectDetail>();
-		return detailList;
+		List<EmployeeProjectDetail> resultList = new ArrayList<EmployeeProjectDetail>();
+		Connection conn = null;
+		try {
+			conn = dataSource.getConnection();
+			PreparedStatement ps = conn.prepareStatement("SELECT P.*, S.id AS Detail_ID "
+					+ "FROM PROJECT P, "
+					+ "(SELECT * FROM employee_project_detail D WHERE D.employee_detail_id = ?) S "
+					+ "WHERE S.project_id = P.id;");
+			ps.setLong(1, employeeID);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next())
+			{
+				EmployeeProjectDetail empProjDetail = new EmployeeProjectDetail();
+				
+				Project proj = new Project();
+				proj.setID(rs.getLong("id"));
+				proj.setName(rs.getString("name"));
+				proj.setDescription(rs.getString("description"));
+				proj.setClient(rs.getString("client"));
+				int detail_id = rs.getInt("Detail_ID");
+				
+				empProjDetail.setProject(proj);
+				
+				List<ProjectRole> rolesList = new ArrayList<ProjectRole>();
+				
+				PreparedStatement ps2 = conn.prepareStatement("SELECT R.* "
+						+ "FROM PROJECT P, EMPLOYEE_PROJECT_DETAIL D, PROJECT_ROLE R "
+						+ "WHERE R.employee_project_detail_id = ? GROUP BY R.id;");
+				ps2.setInt(1, detail_id);
+				ResultSet rs2 = ps2.executeQuery();
+				while(rs2.next())
+				{
+					ProjectRole role = new ProjectRole();
+					role.setID(rs2.getLong("id"));
+					role.setRole(rs2.getString("role"));
+					role.setStartDate(rs2.getDate("start_date"));
+					role.setEndDate(rs2.getDate("end_date"));
+					
+					rolesList.add(role);
+				}
+				rs2.close();
+				ps2.close();
+				
+				empProjDetail.setProjectRoles(rolesList);
+				resultList.add(empProjDetail);
+			}
+			
+			rs.close();
+			ps.close();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+		
+		return resultList;
 	}
 
 	@Override
 	public List<ProjectRole> getEmployeeProjectRoles(long employeeID,
 			long projectID) {
+				
+		List<ProjectRole> resultList = new ArrayList<ProjectRole>();
+		Connection conn = null;
 		
-		List<ProjectRole> list = new ArrayList<ProjectRole>();
-		return list;
+		try {
+			conn = dataSource.getConnection();
+			PreparedStatement ps = conn.prepareStatement("SELECT R.* "
+					+ "FROM "
+					+ "(SELECT D.id "
+					+ "FROM EMPLOYEE_PROJECT_DETAIL D "
+					+ "WHERE d.employee_detail_id = ? AND d.project_id = ?) M, PROJECT_ROLE R "
+					+ "WHERE R.employee_project_detail_id = M.id;");
+			ps.setLong(1, employeeID);
+			ps.setLong(2, projectID);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next())
+			{
+				ProjectRole role = new ProjectRole();
+				role.setID(rs.getLong("id"));
+				role.setRole(rs.getString("role"));
+				role.setStartDate(rs.getDate("start_date"));
+				role.setEndDate(rs.getDate("end_date"));
+				
+				resultList.add(role);
+			}
+			rs.close();
+			ps.close();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+		return resultList;
 	}
 
 	@Override
 	public List<Project> getEmployeeProjects(long employeeID) {
 		
-		List<Project> list = new ArrayList<Project>();
-		return list;
+		List<Project> resultList = new ArrayList<Project>();
+		Connection conn = null;
+		
+		try {
+			conn = dataSource.getConnection();
+			PreparedStatement ps = conn.prepareStatement("SELECT P.* "
+					+ "FROM PROJECT P, "
+					+ "(SELECT * FROM employee_project_detail D WHERE D.employee_detail_id = ?) S "
+					+ "WHERE S.project_id = P.id;");
+			ps.setLong(1, employeeID);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next())
+			{
+				Project proj = new Project();
+				proj.setID(rs.getLong("id"));
+				proj.setName(rs.getString("name"));
+				proj.setDescription(rs.getString("description"));
+				proj.setClient(rs.getString("client"));
+				
+				resultList.add(proj);
+			}
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+		return resultList;
 	}
 }

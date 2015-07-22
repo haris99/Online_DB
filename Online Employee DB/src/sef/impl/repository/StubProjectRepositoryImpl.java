@@ -80,7 +80,7 @@ public class StubProjectRepositoryImpl implements ProjectRepository {
 			conn = dataSource.getConnection();
 			PreparedStatement ps = conn.prepareStatement("SELECT P.*, S.id AS Detail_ID "
 					+ "FROM PROJECT P, "
-					+ "(SELECT * FROM employee_project_detail D WHERE D.employee_detail_id = 2) S "
+					+ "(SELECT * FROM employee_project_detail D WHERE D.employee_detail_id = ?) S "
 					+ "WHERE S.project_id = P.id;");
 			ps.setLong(1, employeeID);
 			ResultSet rs = ps.executeQuery();

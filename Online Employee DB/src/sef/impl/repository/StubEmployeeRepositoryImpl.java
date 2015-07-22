@@ -10,8 +10,6 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import sef.domain.Employee;
-import sef.domain.EmployeeDetail;
-import sef.domain.EmployeeProjectDetail;
 import sef.interfaces.repository.EmployeeRepository;
 
 import org.apache.log4j.Logger;
@@ -60,9 +58,19 @@ public class StubEmployeeRepositoryImpl implements EmployeeRepository {
 				
 				resultList.add(employee);
 			}
+			
+			rs.close();
+			ps.close();
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}	finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
 		}
 		return resultList;
 	}
@@ -90,33 +98,62 @@ public class StubEmployeeRepositoryImpl implements EmployeeRepository {
 				employee.setEnterpriseID(rs.getString("enterprise_id"));
 			}
 			
+			rs.close();
+			ps.close();	
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}		
+		}	finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}	
+		}
 		return employee;
 	}
 
 	@Override
 	public List<Employee> findEmployeesByProject(long projectID) {
 
+		Connection conn = null;
 		List<Employee> resultList = new ArrayList<Employee>();
-		
-		/*List<EmployeeDetail> employeeProjList = new ArrayList<EmployeeDetail>();
-		
-		for(EmployeeDetail empDet:employeeProjList)
-		{
-			List<EmployeeProjectDetail> projectList = new ArrayList<EmployeeProjectDetail>();
-			projectList = empDet.getProjectList();
+		try {
+			conn = dataSource.getConnection();
+			PreparedStatement ps = conn.prepareStatement("SELECT E.* "
+					+ "FROM EMPLOYEE E, PROJECT P, EMPLOYEE_PROJECT_DETAIL D "
+					+ "WHERE E.employee_detail_id = D.employee_detail_id AND D.project_id = ? GROUP BY E.id");
+			ps.setLong(1, projectID);
+			ResultSet rs = ps.executeQuery();
 			
-			for(EmployeeProjectDetail projectDetail:projectList)
+			while(rs.next())
 			{
-				if(projectID == projectDetail.getProject().getID())
-				{
-					resultList.add(empDet.getEmployee());
-				}
-			}			
-		}		*/
+				Employee employee = new Employee();
+				employee.setID(rs.getLong("id"));
+				employee.setFirstName(rs.getString("first_name"));
+				employee.setLastName(rs.getString("last_name"));
+				employee.setMiddleInitial(rs.getString("middle_initial"));
+				employee.setLevel(rs.getString("level"));
+				employee.setWorkForce(rs.getString("work_force"));
+				employee.setEnterpriseID(rs.getString("enterprise_id"));
+				
+				resultList.add(employee);
+			}
+			
+			rs.close();
+			ps.close();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
 		return resultList;
 	}
 }

@@ -13,39 +13,35 @@ import org.apache.log4j.Logger;
 
 public class StubSearchServiceImpl implements SearchService {
 
-	//Tip: create member variables in this class that will contain the objects 
-	//passed by the Spring framework so that other methods can access the objects.
+	// Tip: create member variables in this class that will contain the objects
+	// passed by the Spring framework so that other methods can access the
+	// objects.
 
 	private static Logger log = Logger.getLogger(StubSearchServiceImpl.class);
+	private EmployeeRepository empDAO;
+	private ProjectRepository projectDAO;
 
-	public StubSearchServiceImpl(EmployeeRepository empDAO,
-			ProjectRepository projectDAO) {
+	public StubSearchServiceImpl(EmployeeRepository empDAO, ProjectRepository projectDAO) {
+		this.empDAO = empDAO;
+		this.projectDAO = projectDAO;
 	}
 
 	@Override
 	public List<Employee> findEmployeesByName(String firstName, String lastName) {
 
-		List<Employee> employeeList = new ArrayList<Employee>();
-		return employeeList;
+		return empDAO.findEmployeesByName(firstName, lastName);
 	}
 
 	@Override
 	public List<Employee> findEmployeesByProject(long projectID) {
-		
-		List<Employee> employeeList = new ArrayList<Employee>();
-		return employeeList;
+
+		return empDAO.findEmployeesByProject(projectID);
 	}
 
 	@Override
 	public List<Project> listAllProjects() {
-		
-		List<Project> projectList = new ArrayList<Project>();
-		return projectList;
+
+		return projectDAO.listAllProjects();
 	}
-
-
-
-
-
 
 }

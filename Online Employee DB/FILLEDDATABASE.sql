@@ -168,7 +168,7 @@ CREATE TABLE `project_role` (
   PRIMARY KEY (`id`),
   KEY `fk_project_role_employee_project_detail1_idx` (`employee_project_detail_id`),
   CONSTRAINT `fk_project_role_employee_project_detail1` FOREIGN KEY (`employee_project_detail_id`) REFERENCES `employee_project_detail` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -177,6 +177,7 @@ CREATE TABLE `project_role` (
 
 LOCK TABLES `project_role` WRITE;
 /*!40000 ALTER TABLE `project_role` DISABLE KEYS */;
+INSERT INTO `project_role` VALUES (1,1,'programmer','2013-05-03','2015-05-03'),(2,1,'tester','2013-07-03','2015-02-02'),(3,1,'designer','2014-02-02','2015-07-07'),(4,2,'analyst','2013-07-03','2015-05-03'),(5,2,'tester','2013-07-03','2015-05-03'),(6,3,'tester','2013-07-03','2015-05-03'),(7,4,'programmer','2013-05-03','2015-07-07'),(8,5,'programmer','2013-05-03','2015-07-07'),(9,6,'programmer','2014-02-02','2015-07-07'),(10,7,'tester','2014-02-02','2015-07-07');
 /*!40000 ALTER TABLE `project_role` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -189,4 +190,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-07-22 11:06:50
+-- Dump completed on 2015-07-22 11:35:26

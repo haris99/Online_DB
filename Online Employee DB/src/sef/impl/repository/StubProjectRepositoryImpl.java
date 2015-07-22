@@ -75,13 +75,54 @@ public class StubProjectRepositoryImpl implements ProjectRepository {
 	@Override
 	public List<EmployeeProjectDetail> getEmployeeProjectHistory(long employeeID) {
 		
-		List<EmployeeProjectDetail> detailList = new ArrayList<EmployeeProjectDetail>();
+		List<EmployeeProjectDetail> resultList = new ArrayList<EmployeeProjectDetail>();
 		Connection conn = null;
 		try {
 			conn = dataSource.getConnection();
-			PreparedStatement ps = conn.prepareStatement("");
+			PreparedStatement ps = conn.prepareStatement("SELECT P.*, D.id AS Detail_ID "
+					+ "PROJECT P, EMPLOYEE_PROJECT_DETAIL D "
+					+ "WHERE D.employee_detail_id = ? AND D.project_id = P.id GROUP BY P.id;");
 			ps.setLong(1, employeeID);
 			ResultSet rs = ps.executeQuery();
+			while(rs.next())
+			{
+				EmployeeProjectDetail empProjDetail = new EmployeeProjectDetail();
+				
+				Project proj = new Project();
+				proj.setID(rs.getLong("id"));
+				proj.setName(rs.getString("name"));
+				proj.setDescription(rs.getString("description"));
+				proj.setClient(rs.getString("client"));
+				int detail_id = rs.getInt("Detail_ID");
+				
+				empProjDetail.setProject(proj);
+				
+				List<ProjectRole> rolesList = new ArrayList<ProjectRole>();
+				
+				PreparedStatement ps2 = conn.prepareStatement("SELECT R.* "
+						+ "FROM PROJECT P, EMPLOYEE_PROJECT_DETAIL D, PROJECT_ROLE R "
+						+ "WHERE R.employee_project_detail_id = ? GROUP BY R.id;");
+				ps2.setInt(1, detail_id);
+				ResultSet rs2 = ps2.executeQuery();
+				while(rs2.next())
+				{
+					ProjectRole role = new ProjectRole();
+					role.setID(rs2.getLong("id"));
+					role.setRole(rs2.getString("role"));
+					role.setStartDate(rs2.getDate("start_date"));
+					role.setEndDate(rs2.getDate("end_date"));
+					
+					rolesList.add(role);
+				}
+				rs2.close();
+				ps2.close();
+				
+				empProjDetail.setProjectRoles(rolesList);
+				resultList.add(empProjDetail);
+			}
+			
+			rs.close();
+			ps.close();
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -94,7 +135,7 @@ public class StubProjectRepositoryImpl implements ProjectRepository {
 			}
 		}
 		
-		return detailList;
+		return resultList;
 	}
 
 	@Override

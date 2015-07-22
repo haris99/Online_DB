@@ -1,5 +1,9 @@
 package sef.impl.repository;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,14 +27,45 @@ public class StubSkillRepositoryImpl implements SkillRepository{
 		
 	private static Logger log = Logger.getLogger(StubSkillRepositoryImpl.class);
 
+	private DataSource dataSource;
+	
 	public StubSkillRepositoryImpl(DataSource dataSource){
+		this.dataSource = dataSource;
 	}
 
 	@Override
 	public List<EmployeeSkill> findEmployeeSkills(long employeeID) {
 
-		List<EmployeeSkill> list = new ArrayList<EmployeeSkill>();
-		return list;
+		List<EmployeeSkill> resultList = new ArrayList<EmployeeSkill>();
+		Connection conn = null;
+		try {
+			conn = dataSource.getConnection();
+			PreparedStatement ps = conn.prepareStatement("SELECT * FROM EMPLOYEE_SKILL S "
+					+ "WHERE S.employee_detail_id = ?;");
+			ps.setLong(1, employeeID);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next())
+			{
+				EmployeeSkill empSkill = new EmployeeSkill();
+				empSkill.setID(rs.getLong("id"));
+				empSkill.setName(rs.getString("name"));
+				empSkill.setDescription(rs.getString("description"));
+				empSkill.setRating(rs.getInt("rating"));
+				
+				resultList.add(empSkill);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+		
+		return resultList;
 	}
 
 

@@ -10,6 +10,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import sef.domain.Employee;
+import sef.domain.Project;
 import sef.interfaces.repository.EmployeeRepository;
 
 import org.apache.log4j.Logger;
@@ -47,14 +48,9 @@ public class StubEmployeeRepositoryImpl implements EmployeeRepository {
 			
 			while(rs.next())
 			{
-				Employee employee = new Employee();
-				employee.setID(rs.getLong("id"));
-				employee.setFirstName(rs.getString("first_name"));
-				employee.setLastName(rs.getString("last_name"));
-				employee.setMiddleInitial(rs.getString("middle_initial"));
-				employee.setLevel(rs.getString("level"));
-				employee.setWorkForce(rs.getString("work_force"));
-				employee.setEnterpriseID(rs.getString("enterprise_id"));
+				Employee employee = setEmployee(rs.getLong("id"),rs.getString("first_name"),rs.getString("last_name"),
+						rs.getString("middle_initial"),rs.getString("level"),rs.getString("work_force"),rs.getString("enterprise_id"));
+				
 				
 				resultList.add(employee);
 			}
@@ -89,13 +85,8 @@ public class StubEmployeeRepositoryImpl implements EmployeeRepository {
 			
 			while(rs.next())
 			{
-				employee.setID(rs.getLong("id"));
-				employee.setFirstName(rs.getString("first_name"));
-				employee.setLastName(rs.getString("last_name"));
-				employee.setMiddleInitial(rs.getString("middle_initial"));
-				employee.setLevel(rs.getString("level"));
-				employee.setWorkForce(rs.getString("work_force"));
-				employee.setEnterpriseID(rs.getString("enterprise_id"));
+				employee = setEmployee(rs.getLong("id"),rs.getString("first_name"),rs.getString("last_name"),
+						rs.getString("middle_initial"),rs.getString("level"),rs.getString("work_force"),rs.getString("enterprise_id"));
 			}
 			
 			rs.close();
@@ -129,14 +120,8 @@ public class StubEmployeeRepositoryImpl implements EmployeeRepository {
 			
 			while(rs.next())
 			{
-				Employee employee = new Employee();
-				employee.setID(rs.getLong("id"));
-				employee.setFirstName(rs.getString("first_name"));
-				employee.setLastName(rs.getString("last_name"));
-				employee.setMiddleInitial(rs.getString("middle_initial"));
-				employee.setLevel(rs.getString("level"));
-				employee.setWorkForce(rs.getString("work_force"));
-				employee.setEnterpriseID(rs.getString("enterprise_id"));
+				Employee employee = setEmployee(rs.getLong("id"),rs.getString("first_name"),rs.getString("last_name"),
+						rs.getString("middle_initial"),rs.getString("level"),rs.getString("work_force"),rs.getString("enterprise_id"));
 				
 				resultList.add(employee);
 			}
@@ -155,5 +140,18 @@ public class StubEmployeeRepositoryImpl implements EmployeeRepository {
 			}
 		}
 		return resultList;
+	}
+	public Employee setEmployee(Long id, String first_name, String last_name, String middle_initial, String level, String work_force, String enterprise_id)
+	{
+		Employee employee = new Employee();
+		employee.setID(id);
+		employee.setFirstName(first_name);
+		employee.setLastName(last_name);
+		employee.setMiddleInitial(middle_initial);
+		employee.setLevel(level);
+		employee.setWorkForce(work_force);
+		employee.setEnterpriseID(enterprise_id);
+		
+		return employee;
 	}
 }

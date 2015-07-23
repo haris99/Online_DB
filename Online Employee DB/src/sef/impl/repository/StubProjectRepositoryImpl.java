@@ -36,7 +36,15 @@ public class StubProjectRepositoryImpl implements ProjectRepository {
 	public StubProjectRepositoryImpl(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
-
+	
+	/*
+	 * (non-Javadoc)
+	 * Gets data about all projects from database
+	 * 
+	 * @see sef.interfaces.repository.ProjectRepository#listAllProjects()
+	 * 
+	 * @return 	List of employees that works with project
+	 */	
 	@Override
 	public List<Project> listAllProjects() {
 		Connection conn = null;
@@ -68,7 +76,16 @@ public class StubProjectRepositoryImpl implements ProjectRepository {
 		}
 		return resultList;
 	}
-
+	
+	/*
+	 * (non-Javadoc)
+	 * Finds data about employees project history
+	 * 
+	 * @see sef.interfaces.repository.ProjectRepository#getEmployeeProjectHistory(long)
+	 * @param 	employeeID 
+	 * 			Employee ID
+	 * @return 	list of EmployeeProjectDetail
+	 */
 	@Override
 	public List<EmployeeProjectDetail> getEmployeeProjectHistory(long employeeID) {
 		
@@ -129,7 +146,18 @@ public class StubProjectRepositoryImpl implements ProjectRepository {
 		
 		return resultList;
 	}
-
+	
+	/*
+	 * (non-Javadoc)
+	 * Finds data about employees roles in project
+	 * 
+	 * @see sef.interfaces.repository.ProjectRepository#getEmployeeProjectRoles(long, long)
+	 * @param 	employeeID 
+	 * 			Employee ID
+	 * @param 	projectID 
+	 * 			Project ID
+	 * @return 	list of ProjectRole
+	 */
 	@Override
 	public List<ProjectRole> getEmployeeProjectRoles(long employeeID,
 			long projectID) {
@@ -170,7 +198,16 @@ public class StubProjectRepositoryImpl implements ProjectRepository {
 		}
 		return resultList;
 	}
-
+	
+	/*
+	 * (non-Javadoc)
+	 * Finds data about projects, that employee works for
+	 * 
+	 * @see sef.interfaces.repository.ProjectRepository#getEmployeeProjects(long)
+	 * @param 	employeeID 
+	 * 			Employee ID
+	 * @return 	list of Project
+	 */
 	@Override
 	public List<Project> getEmployeeProjects(long employeeID) {
 		
@@ -206,6 +243,23 @@ public class StubProjectRepositoryImpl implements ProjectRepository {
 		return resultList;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * Creates Project object with given parameters
+	 * 
+	 * @param 	id 
+	 * 			project ID
+	 * 
+	 * @param 	name 
+	 * 			project name
+	 * 
+	 * @param 	description 
+	 * 			project description
+	 * 
+	 * @param 	client 
+	 * 			client
+	 * @return 	Project object with given parameters
+	 */
 	public Project setProject(Long id, String name, String description, String client)
 	{
 		Project proj = new Project();
@@ -217,6 +271,23 @@ public class StubProjectRepositoryImpl implements ProjectRepository {
 		return proj;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * Creates ProjectRole object with given parameters
+	 * 
+	 * @param 	id 
+	 * 			role ID
+	 * 
+	 * @param 	role 
+	 * 			role name
+	 * 
+	 * @param 	start_date 
+	 * 			date, when started to work in given role
+	 * 
+	 * @param 	end_date 
+	 * 			date, when ends to work in given role
+	 * @return 	ProjectRole object with given parameters
+	 */
 	public ProjectRole setRole(Long id, String role, Date start_date, Date end_date)
 	{
 		ProjectRole projectRole = new ProjectRole();

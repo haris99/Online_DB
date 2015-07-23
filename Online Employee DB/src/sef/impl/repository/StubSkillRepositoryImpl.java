@@ -32,7 +32,16 @@ public class StubSkillRepositoryImpl implements SkillRepository{
 	public StubSkillRepositoryImpl(DataSource dataSource){
 		this.dataSource = dataSource;
 	}
-
+	
+	/*
+	 * (non-Javadoc)
+	 * Finds data about employee skills
+	 * 
+	 * @see sef.interfaces.repository.SkillRepository#findEmployeeSkills(long)
+	 * @param 	employeeID 
+	 * 			Employee ID
+	 * @return 	list of EmployeeSkills
+	 */
 	@Override
 	public List<EmployeeSkill> findEmployeeSkills(long employeeID) {
 

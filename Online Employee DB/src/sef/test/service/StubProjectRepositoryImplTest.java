@@ -8,6 +8,8 @@ import javax.sql.DataSource;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
+
 import junit.framework.TestCase;
 import sef.domain.Project;
 import sef.domain.ProjectRole;
@@ -17,32 +19,50 @@ import sef.interfaces.service.SearchService;
 public class StubProjectRepositoryImplTest extends TestCase {
 	private DataSource dataSource;
 	StubProjectRepositoryImpl repo;
-	
-	public void setUp(){
+	DataSource wrongDataSource;
+	StubProjectRepositoryImpl wrongRepo;
+
+	public void setUp() {
 		ApplicationContext context = new ClassPathXmlApplicationContext("classpath:repository-config.xml");
-		dataSource = (DataSource)context.getBean("dataSource");
+		dataSource = (DataSource) context.getBean("dataSource");
 		repo = new StubProjectRepositoryImpl(dataSource);
+		wrongDataSource = null;
+		wrongRepo = new StubProjectRepositoryImpl(wrongDataSource);
 	}
-	
-	
-	public void testGetEmployeeProjectRoles(){
+
+	public void testGetEmployeeProjectRoles() {
 		List<ProjectRole> resultList = new ArrayList<ProjectRole>();
 		resultList = repo.getEmployeeProjectRoles(1, 1);
-		assertTrue(resultList.size()>=1);
+		assertTrue(resultList.size() >= 1);
 		resultList = new ArrayList<ProjectRole>();
 		resultList = repo.getEmployeeProjectRoles(999, 1);
-		assertTrue(resultList.size()==0);
+		assertTrue(resultList.size() == 0);
 		resultList = new ArrayList<ProjectRole>();
 		resultList = repo.getEmployeeProjectRoles(1, 999);
-		assertTrue(resultList.size()==0);
+		assertTrue(resultList.size() == 0);
+		try {
+			resultList = new ArrayList<ProjectRole>();
+			resultList = wrongRepo.getEmployeeProjectRoles(1, 1);
+			fail();
+		} catch (NullPointerException e) {
+			System.out.println("Catch succesful");
+		}
 	}
-	
-	public void testGetEmployeeProjects(){
+
+	public void testGetEmployeeProjects() {
 		List<Project> resultList = new ArrayList<Project>();
 		resultList = repo.getEmployeeProjects(1);
-		assertTrue(resultList.size()>=1);
+		assertTrue(resultList.size() >= 1);
 		resultList = new ArrayList<Project>();
 		resultList = repo.getEmployeeProjects(999);
-		assertTrue(resultList.size()==0);
+		assertTrue(resultList.size() == 0);
+		try {
+			resultList = new ArrayList<Project>();
+			resultList = wrongRepo.getEmployeeProjects(1);
+			fail();
+		} catch (NullPointerException e) {
+			System.out.println("Catch succesful");
+		}
+
 	}
 }

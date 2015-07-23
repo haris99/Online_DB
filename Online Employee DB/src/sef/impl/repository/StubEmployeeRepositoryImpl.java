@@ -145,8 +145,8 @@ public class StubEmployeeRepositoryImpl implements EmployeeRepository {
 		try {
 			conn = dataSource.getConnection();
 			PreparedStatement ps = conn.prepareStatement("SELECT E.* "
-					+ "FROM EMPLOYEE E, PROJECT P, EMPLOYEE_PROJECT_DETAIL D "
-					+ "WHERE E.employee_detail_id = D.employee_detail_id AND D.project_id = ? GROUP BY E.id");
+					+ "FROM EMPLOYEE E, EMPLOYEE_PROJECT_DETAIL D "
+					+ "WHERE E.employee_detail_id = D.employee_detail_id AND D.project_id = ?;");
 			ps.setLong(1, projectID);
 			ResultSet rs = ps.executeQuery();
 			

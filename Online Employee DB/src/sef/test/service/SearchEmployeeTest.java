@@ -12,6 +12,7 @@ public class SearchEmployeeTest extends TestCase{
 	
 	private SearchService service;
 	
+	
 	public void setUp(){
 		ApplicationContext context = new ClassPathXmlApplicationContext("classpath:repository-config.xml");
 		service = (SearchService)context.getBean("searchService");

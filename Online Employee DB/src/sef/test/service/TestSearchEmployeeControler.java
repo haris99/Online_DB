@@ -25,24 +25,28 @@ public class TestSearchEmployeeControler extends TestCase {
 	
 	
 	public void testOnViewEmployeeDetails() throws Exception{
+		//if the method runs succesfully it will have the viewName assigned to it
 		ModelAndView mav = new ModelAndView();
 		mav = controller.onViewEmployeeDetails(1);
 		assertEquals("find/employeeDetails",mav.getViewName());
 	}
 	
 	public void testOnInitialSearchFormState() throws Exception{
+		//if the method runs succesfully it will have the viewName assigned to it
 		ModelAndView mav = new ModelAndView();
 		mav = controller.onInitialSearchFormState();
 		assertEquals("find/employeeSearchForm", mav.getViewName());
 	}
 	
 	public void testOnSubmitSearchByName(){
+		//if the method runs succesfully it will have the viewName assigned to it
 		ModelAndView mav = new ModelAndView();
 		mav = controller.onSubmitSearchByName("vards", "uzvards", 1);
 		assertEquals("find/employeeSearchForm", mav.getViewName());
 	}
 	
 	public void testOnSubmitSearchByProject(){
+		//if the method runs succesfully it will have the viewName assigned to it
 		ModelAndView mav = new ModelAndView();
 		mav = controller.onSubmitSearchByProject(1);
 		assertEquals("find/employeeSearchForm", mav.getViewName());

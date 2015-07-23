@@ -32,12 +32,12 @@ public class EmployeeDetailsServiceTest extends TestCase{
 	
 	
 	public void testGetEmployeeDetails () {
-		//runtest.testListAllProjects();
 		EmployeeDetail details = new EmployeeDetail();
 		details = service.getEmployeeDetails(1);
+		//there should be an employee with id 1
 		assertTrue(details.getEmployee().getEnterpriseID() != null);
-		//System.out.println(details.getEmployee().getEnterpriseID());
 		details = new EmployeeDetail();
+		//there should be no employee with id 999
 		details = service.getEmployeeDetails(999);
 		assertTrue(details.getEmployee().getEnterpriseID() == null);
 	}

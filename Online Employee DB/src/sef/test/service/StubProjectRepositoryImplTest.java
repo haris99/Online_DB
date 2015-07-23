@@ -45,7 +45,7 @@ public class StubProjectRepositoryImplTest extends TestCase {
 			resultList = wrongRepo.getEmployeeProjectRoles(1, 1);
 			fail();
 		} catch (NullPointerException e) {
-			System.out.println("Catch succesful");
+			System.out.println("testGetEmployeeProjectRoles Catch succesful");
 		}
 	}
 
@@ -61,8 +61,7 @@ public class StubProjectRepositoryImplTest extends TestCase {
 			resultList = wrongRepo.getEmployeeProjects(1);
 			fail();
 		} catch (NullPointerException e) {
-			System.out.println("Catch succesful");
+			System.out.println("testGetEmployeeProjects Catch succesful");
 		}
-
 	}
 }

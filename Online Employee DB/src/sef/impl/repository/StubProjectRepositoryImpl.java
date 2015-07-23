@@ -1,6 +1,7 @@
 package sef.impl.repository;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -48,11 +49,8 @@ public class StubProjectRepositoryImpl implements ProjectRepository {
 			rs = stmt.executeQuery("SELECT * FROM PROJECT");			
 			
 			while (rs.next()) {
-				Project proj = new Project();
-				proj.setID(rs.getLong("id"));
-				proj.setName(rs.getString("name"));
-				proj.setDescription(rs.getString("description"));
-				proj.setClient(rs.getString("client"));
+				Project proj = setProject(rs.getLong("id"), rs.getString("name"), 
+						rs.getString("description"), rs.getString("client"));
 				resultList.add(proj);
 			}
 			rs.close();
@@ -88,11 +86,8 @@ public class StubProjectRepositoryImpl implements ProjectRepository {
 			{
 				EmployeeProjectDetail empProjDetail = new EmployeeProjectDetail();
 				
-				Project proj = new Project();
-				proj.setID(rs.getLong("id"));
-				proj.setName(rs.getString("name"));
-				proj.setDescription(rs.getString("description"));
-				proj.setClient(rs.getString("client"));
+				Project proj = setProject(rs.getLong("id"), rs.getString("name"), 
+						rs.getString("description"), rs.getString("client"));
 				int detail_id = rs.getInt("Detail_ID");
 				
 				empProjDetail.setProject(proj);
@@ -106,11 +101,8 @@ public class StubProjectRepositoryImpl implements ProjectRepository {
 				ResultSet rs2 = ps2.executeQuery();
 				while(rs2.next())
 				{
-					ProjectRole role = new ProjectRole();
-					role.setID(rs2.getLong("id"));
-					role.setRole(rs2.getString("role"));
-					role.setStartDate(rs2.getDate("start_date"));
-					role.setEndDate(rs2.getDate("end_date"));
+					ProjectRole role = setRole(rs2.getLong("id"), rs2.getString("role"), 
+							rs2.getDate("start_date"), rs2.getDate("end_date"));
 					
 					rolesList.add(role);
 				}
@@ -158,11 +150,8 @@ public class StubProjectRepositoryImpl implements ProjectRepository {
 			ResultSet rs = ps.executeQuery();
 			while(rs.next())
 			{
-				ProjectRole role = new ProjectRole();
-				role.setID(rs.getLong("id"));
-				role.setRole(rs.getString("role"));
-				role.setStartDate(rs.getDate("start_date"));
-				role.setEndDate(rs.getDate("end_date"));
+				ProjectRole role = setRole(rs.getLong("id"), rs.getString("role"), 
+						rs.getDate("start_date"), rs.getDate("end_date"));
 				
 				resultList.add(role);
 			}
@@ -198,12 +187,8 @@ public class StubProjectRepositoryImpl implements ProjectRepository {
 			ResultSet rs = ps.executeQuery();
 			while(rs.next())
 			{
-				Project proj = new Project();
-				proj.setID(rs.getLong("id"));
-				proj.setName(rs.getString("name"));
-				proj.setDescription(rs.getString("description"));
-				proj.setClient(rs.getString("client"));
-				
+				Project proj = setProject(rs.getLong("id"), rs.getString("name"), 
+						rs.getString("description"), rs.getString("client"));				
 				resultList.add(proj);
 			}
 			rs.close();
@@ -219,5 +204,27 @@ public class StubProjectRepositoryImpl implements ProjectRepository {
 			}
 		}
 		return resultList;
+	}
+	
+	public Project setProject(Long id, String name, String description, String client)
+	{
+		Project proj = new Project();
+		proj.setID(id);
+		proj.setName(name);
+		proj.setDescription(description);
+		proj.setClient(client);
+		
+		return proj;
+	}
+	
+	public ProjectRole setRole(Long id, String role, Date start_date, Date end_date)
+	{
+		ProjectRole projectRole = new ProjectRole();
+		projectRole.setID(id);
+		projectRole.setRole(role);
+		projectRole.setStartDate(start_date);
+		projectRole.setEndDate(end_date);
+		
+		return projectRole;
 	}
 }

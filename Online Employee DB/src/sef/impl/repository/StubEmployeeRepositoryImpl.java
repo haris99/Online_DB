@@ -33,8 +33,20 @@ public class StubEmployeeRepositoryImpl implements EmployeeRepository {
 	
 	public StubEmployeeRepositoryImpl(DataSource dataSource) {
 		this.dataSource = dataSource;
-	}
-
+	}	
+	
+	/*
+	 * (non-Javadoc)
+	 * Finds employees in database with given first name and last name
+	 * 
+	 * @see sef.interfaces.repository.EmployeeRepository#findEmployeesByName(java.lang.String, java.lang.String)
+	 * @param 	firstName 
+	 * 			Employee first name for search
+	 * 
+	 * @param	lastName
+	 * 			Employee last name for search
+	 * @return 	list of employees found
+	 */
 	@Override
 	public List<Employee> findEmployeesByName(String firstName, String lastName) {
 		Connection conn = null;
@@ -70,7 +82,17 @@ public class StubEmployeeRepositoryImpl implements EmployeeRepository {
 		}
 		return resultList;
 	}
-
+	
+	/*
+	 * (non-Javadoc)
+	 * Finds employees in database with employee ID
+	 * 
+	 * @see sef.interfaces.repository.EmployeeRepository#findEmployeeByID(long)
+	 * @param 	employeeID 
+	 * 			Employee ID for search
+	 * 
+	 * @return 	Employee with corresponding ID
+	 */
 	@Override
 	public Employee findEmployeeByID(long employeeID) {
 		
@@ -104,7 +126,17 @@ public class StubEmployeeRepositoryImpl implements EmployeeRepository {
 		}
 		return employee;
 	}
-
+	
+	/*
+	 * (non-Javadoc)
+	 * Finds employees in database that work on corresponding project
+	 * 
+	 * @see sef.interfaces.repository.EmployeeRepository#findEmployeesByProject(long)
+	 * @param 	projectID 
+	 * 			Project ID for search
+	 * 
+	 * @return 	List of employees that works with project
+	 */
 	@Override
 	public List<Employee> findEmployeesByProject(long projectID) {
 
@@ -141,6 +173,34 @@ public class StubEmployeeRepositoryImpl implements EmployeeRepository {
 		}
 		return resultList;
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * Creates Employee object with given parameters
+	 * 
+	 * @param 	id 
+	 * 			employee ID
+	 * 
+	 * @param 	first_name 
+	 * 			employee first name
+	 * 
+	 * @param 	last_name 
+	 * 			employee last name
+	 * 
+	 * @param 	middle_initial 
+	 * 			employee middle initial
+	 * 
+	 * @param 	level 
+	 * 			employee level
+	 * 
+	 * @param 	work_force 
+	 * 			employee work force
+	 * 
+	 * @param 	enterprise_id 
+	 * 			employee enterprise id
+	 * 
+	 * @return 	Employee object with given parameters
+	 */
 	public Employee setEmployee(Long id, String first_name, String last_name, String middle_initial, String level, String work_force, String enterprise_id)
 	{
 		Employee employee = new Employee();

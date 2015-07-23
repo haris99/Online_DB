@@ -11,6 +11,7 @@ public class AllTests {
 		suite.addTestSuite(EmployeeDetailsServiceTest.class);
 		suite.addTestSuite(SearchEmployeeTest.class);
 		suite.addTestSuite(StubProjectRepositoryImplTest.class);
+		suite.addTestSuite(TestSearchEmployeeControler.class);
 		//$JUnit-END$
 		return suite;
 	}
